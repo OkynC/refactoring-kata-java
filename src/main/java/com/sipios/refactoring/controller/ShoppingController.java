@@ -16,9 +16,12 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/shopping")
 public class ShoppingController {
 
+    // NC: either use logger or remove it
     private Logger logger = LoggerFactory.getLogger(ShoppingController.class);
 
     @PostMapping
+    // NC: Change signature
+    // NC: Change variables names.....
     public String getPrice(@RequestBody Body b) {
         double p = 0;
         double d;
@@ -27,7 +30,8 @@ public class ShoppingController {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
         cal.setTime(date);
 
-        // Compute discount for customer
+        // Compute discount for customer <= NC: verify comments
+        // NC: use a switch and therefore maybe an enum
         if (b.getType().equals("STANDARD_CUSTOMER")) {
             d = 1;
         } else if (b.getType().equals("PREMIUM_CUSTOMER")) {
@@ -40,6 +44,7 @@ public class ShoppingController {
 
         // Compute total amount depending on the types and quantity of product and
         // if we are in winter or summer discounts periods
+        // NC: comparison are to be changed and maybe check if cleaner way can be done
         if (
             !(
                 cal.get(Calendar.DAY_OF_MONTH) < 15 &&
@@ -56,9 +61,11 @@ public class ShoppingController {
                 return "0";
             }
 
+            // NC: use a forEach
             for (int i = 0; i < b.getItems().length; i++) {
                 Item it = b.getItems()[i];
 
+                // NC: use a switch and an enum
                 if (it.getType().equals("TSHIRT")) {
                     p += 30 * it.getNb() * d;
                 } else if (it.getType().equals("DRESS")) {
@@ -66,6 +73,7 @@ public class ShoppingController {
                 } else if (it.getType().equals("JACKET")) {
                     p += 100 * it.getNb() * d;
                 }
+                // NC: remove (useless?) commented out code
                 // else if (it.getType().equals("SWEATSHIRT")) {
                 //     price += 80 * it.getNb();
                 // }
@@ -78,6 +86,7 @@ public class ShoppingController {
             for (int i = 0; i < b.getItems().length; i++) {
                 Item it = b.getItems()[i];
 
+                // NC: same code as above, but with a "discount" => factorisation to do
                 if (it.getType().equals("TSHIRT")) {
                     p += 30 * it.getNb() * d;
                 } else if (it.getType().equals("DRESS")) {
@@ -91,6 +100,7 @@ public class ShoppingController {
             }
         }
 
+        // NC: is an exception process in order ?
         try {
             if (b.getType().equals("STANDARD_CUSTOMER")) {
                 if (p > 200) {
@@ -113,10 +123,12 @@ public class ShoppingController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
+        // NC: Maybe add a OK status XD
         return String.valueOf(p);
     }
 }
 
+// NC: remove multiple classes & check that all getters/setters and methods are usefull
 class Body {
 
     private Item[] items;
