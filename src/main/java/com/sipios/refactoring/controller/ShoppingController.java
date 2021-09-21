@@ -24,7 +24,7 @@ public class ShoppingController {
     // NC: Add a swagger and doc...
 
     // NC: either use logger or remove it
-    private Logger logger = LoggerFactory.getLogger(ShoppingController.class);
+    private final Logger logger = LoggerFactory.getLogger(ShoppingController.class);
 
     @PostMapping
     // NC: Change signature => impossible ! (as per the requirements)
@@ -59,16 +59,12 @@ public class ShoppingController {
         priceToPay = Arrays.stream(customer.getItems()).map((elem) -> {
             return elem.getPrice(customerDiscount, isDiscountPeriod);
         }).reduce(0.0, Double::sum);
+
         logger.info("Calculated price to pay is {}", priceToPay);
 
-        // NC: is an exception process in order ?
+        // NC => Exception process to remove
         try {
             switch (customer.getType()) {
-                case "STANDARD_CUSTOMER":
-                    if (priceToPay > 200) {
-                        throw new Exception("Price (" + priceToPay + ") is too high for standard customer");
-                    }
-                    break;
                 case "PREMIUM_CUSTOMER":
                     if (priceToPay > 800) {
                         throw new Exception("Price (" + priceToPay + ") is too high for premium customer");
@@ -86,11 +82,12 @@ public class ShoppingController {
                     break;
             }
         } catch (Exception e) {
+            logger.warn(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
         // NC: Maybe add a OK status XD
-        return String.valueOf(priceToPay);
+        return priceToPay.toString();
     }
 }
 
