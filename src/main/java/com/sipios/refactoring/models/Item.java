@@ -21,4 +21,8 @@ public class Item {
     public int getQuantity() {
         return quantity;
     }
+
+    public double getPrice(double customerDiscount, boolean discountPeriod) {
+        return InternalItem.valueOf(this.getType()).getPrice(discountPeriod) * this.getQuantity() * customerDiscount;
+    }
 }
