@@ -59,7 +59,7 @@ public class ShoppingController {
             )
         ) {
             if (b.getItems() == null) {
-                return "0";
+                return "0"; // NC: should return a INT !!!!
             }
 
             // NC: use a forEach
@@ -81,7 +81,7 @@ public class ShoppingController {
             }
         } else {
             if (b.getItems() == null) {
-                return "0";
+                return "0"; // NC: should return a INT !!!!
             }
 
             for (int i = 0; i < b.getItems().length; i++) {
