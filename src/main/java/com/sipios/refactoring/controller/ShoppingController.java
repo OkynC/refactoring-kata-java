@@ -3,6 +3,9 @@ package com.sipios.refactoring.controller;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import com.sipios.refactoring.models.Customer;
+import com.sipios.refactoring.models.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,7 +26,7 @@ public class ShoppingController {
     @PostMapping
     // NC: Change signature
     // NC: Change variables names.....
-    public String getPrice(@RequestBody Body b) {
+    public String getPrice(@RequestBody Customer b) {
         double p = 0;
         double d;
 
@@ -68,11 +71,11 @@ public class ShoppingController {
 
                 // NC: use a switch and an enum
                 if (it.getType().equals("TSHIRT")) {
-                    p += 30 * it.getNb() * d;
+                    p += 30 * it.getQuantity() * d;
                 } else if (it.getType().equals("DRESS")) {
-                    p += 50 * it.getNb() * d;
+                    p += 50 * it.getQuantity() * d;
                 } else if (it.getType().equals("JACKET")) {
-                    p += 100 * it.getNb() * d;
+                    p += 100 * it.getQuantity() * d;
                 }
                 // NC: remove (useless?) commented out code
                 // else if (it.getType().equals("SWEATSHIRT")) {
@@ -89,11 +92,11 @@ public class ShoppingController {
 
                 // NC: same code as above, but with a "discount" => factorisation to do
                 if (it.getType().equals("TSHIRT")) {
-                    p += 30 * it.getNb() * d;
+                    p += 30 * it.getQuantity() * d;
                 } else if (it.getType().equals("DRESS")) {
-                    p += 50 * it.getNb() * 0.8 * d;
+                    p += 50 * it.getQuantity() * 0.8 * d;
                 } else if (it.getType().equals("JACKET")) {
-                    p += 100 * it.getNb() * 0.9 * d;
+                    p += 100 * it.getQuantity() * 0.9 * d;
                 }
                 // else if (it.getType().equals("SWEATSHIRT")) {
                 //     price += 80 * it.getNb();
@@ -129,61 +132,3 @@ public class ShoppingController {
     }
 }
 
-// NC: remove multiple classes & check that all getters/setters and methods are usefull
-class Body {
-
-    private Item[] items;
-    private String type;
-
-    public Body(Item[] is, String t) {
-        this.items = is;
-        this.type = t;
-    }
-
-    public Body() {}
-
-    public Item[] getItems() {
-        return items;
-    }
-
-    public void setItems(Item[] items) {
-        this.items = items;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-}
-
-class Item {
-
-    private String type;
-    private int nb;
-
-    public Item() {}
-
-    public Item(String type, int quantity) {
-        this.type = type;
-        this.nb = quantity;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getNb() {
-        return nb;
-    }
-
-    public void setNb(int nb) {
-        this.nb = nb;
-    }
-}
