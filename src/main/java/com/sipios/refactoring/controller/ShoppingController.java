@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/shopping")
 public class ShoppingController {
+    // NC: Add a swagger and doc...
 
     // NC: either use logger or remove it
     private Logger logger = LoggerFactory.getLogger(ShoppingController.class);

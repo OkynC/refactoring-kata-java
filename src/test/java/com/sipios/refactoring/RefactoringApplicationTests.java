@@ -8,4 +8,5 @@ class RefactoringApplicationTests {
 
     @Test
     void contextLoads() {}
+    // NC: I love empty test...
 }

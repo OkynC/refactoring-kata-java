@@ -11,9 +11,11 @@ class ShoppingControllerTests extends UnitTest {
     private ShoppingController controller;
 
     @Test
-    void should_not_throw() {
+    void should_not_throw() { // NC: good name for a test
         Assertions.assertDoesNotThrow(
             () -> controller.getPrice(new Body(new Item[] {}, "STANDARD_CUSTOMER"))
         );
     }
+
+    // NC: add tests
 }
