@@ -5,4 +5,4 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public abstract class UnitTest {}
-// NC: why ?!
+// NC => Add tests to validate pricing per object type or customer discount value

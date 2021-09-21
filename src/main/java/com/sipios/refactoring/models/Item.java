@@ -1,8 +1,6 @@
 package com.sipios.refactoring.models;
 
 public class Item {
-    // Why quantity ??
-
     private String type;
     private int quantity;
 
