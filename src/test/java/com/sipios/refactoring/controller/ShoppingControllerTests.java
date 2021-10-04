@@ -6,6 +6,7 @@ import com.sipios.refactoring.models.Item;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -18,7 +19,6 @@ class ShoppingControllerTests extends UnitTest {
     @InjectMocks
     private ShoppingController controller;
 
-
     @Test
     void should_not_throw() { // NC: good name for a test
         Assertions.assertDoesNotThrow(
@@ -26,7 +26,6 @@ class ShoppingControllerTests extends UnitTest {
         );
     }
 
-    // NC: add tests
     @Test
     void emptyItemListGetPriceOf0() {
         Customer standardCustomer = new Customer(new Item[0], "STANDARD_CUSTOMER");
@@ -54,6 +53,27 @@ class ShoppingControllerTests extends UnitTest {
 
         Customer platinumCustomer = new Customer(bag1, "PLATINUM_CUSTOMER");
         Assertions.assertEquals("90.0", controller.getPrice(platinumCustomer));
+    }
+
+    @Test
+    void priceIsTooHigh() {
+        Item[] bag1 = new Item[]{new Item("TSHIRT", 1), new Item("DRESS", 2), new Item("JACKET", 1)};
+        Customer standardCustomer = new Customer(bag1, "STANDARD_CUSTOMER");
+        Assertions.assertThrows(ResponseStatusException.class, () -> {
+            controller.getPrice(standardCustomer);
+        });
+
+        Item[] bag2 = new Item[]{new Item("TSHIRT", 5), new Item("DRESS", 5), new Item("JACKET", 5)};
+        Customer premiumCustomer = new Customer(bag2, "PREMIUM_CUSTOMER");
+        Assertions.assertThrows(ResponseStatusException.class, () -> {
+            controller.getPrice(premiumCustomer);
+        });
+
+        Item[] bag3 = new Item[]{new Item("TSHIRT", 20), new Item("DRESS", 20), new Item("JACKET", 25)};
+        Customer platinumCustomer = new Customer(bag3, "PLATINUM_CUSTOMER");
+        Assertions.assertThrows(ResponseStatusException.class, () -> {
+            controller.getPrice(platinumCustomer);
+        });
     }
 
     @Test

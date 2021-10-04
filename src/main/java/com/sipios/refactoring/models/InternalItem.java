@@ -1,42 +1,22 @@
 package com.sipios.refactoring.models;
 
 public enum InternalItem {
-    TSHIRT,
-    DRESS,
-    JACKET;
+    TSHIRT(30, 1),
+    DRESS(50, 0.8),
+    JACKET(100, 0.9);
 
-    public double getDiscountPeriodPriceModificator() {
-        switch(this) {
-            case TSHIRT:
-                return 1;
-            case DRESS:
-                return 0.8;
-            case JACKET:
-                return 0.9;
-            default:
-                return 0;
-        }
+    private final double price;
+    private final double discountModifier;
+
+    InternalItem(double price, double discountModifier) {
+        this.price = price;
+        this.discountModifier = discountModifier;
     }
 
     public double getPrice(boolean discountPeriod) {
-        switch (this) {
-            case TSHIRT:
-                if (discountPeriod) {
-                    return 30 * this.getDiscountPeriodPriceModificator();
-                }
-                return 30;
-            case DRESS:
-                if (discountPeriod) {
-                    return 50 * this.getDiscountPeriodPriceModificator();
-                }
-                return 50;
-            case JACKET:
-                if (discountPeriod) {
-                    return 100 * this.getDiscountPeriodPriceModificator();
-                }
-                return 100;
-            default:
-                return 0;
+        if (discountPeriod) {
+            return this.price * this.discountModifier;
         }
+        return this.price;
     }
 }
